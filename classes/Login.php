@@ -68,7 +68,7 @@ class Login extends DBConnection {
 
     public function getLocationList() {
 	// API endpoint URL
-	$url = DASH_API . '/v1/super-admin/location-list';
+	$url = DASH_API . '/v1/employee/location-list';
 	
   
 	
@@ -116,7 +116,8 @@ class Login extends DBConnection {
 		// print_r($loc_id); die;
 
 		$id =$_GET['platform_user_id'];
-		$url = 'http://roster.reverely.ai/api/employee?id='.$id;
+		$url = 'http://roster.demo.reverely.ai//api/employee?id='.$id;
+		//http://roster.demo.reverely.ai/
 		$options = array(
 		'http' => array(
 			'method' => 'GET',
@@ -129,21 +130,34 @@ class Login extends DBConnection {
 		$response = file_get_contents($url, false, $context);	
 
 
+		$decoded_response1 = json_decode($response, true);
+			
+			
+
+		$username = $decoded_response1['data']['name'];
+
+		// print_r($locations1); die;
+
+
 		$token = $_GET['token'];
 		$loc_id = $_GET['loc_id'];
+		$role_id =$_GET['role_id'];
 
 		$this->settings->set_userdata('token',$token);
 		$this->settings->set_userdata('loc_id',$loc_id);
+		$this->settings->set_userdata('role_id',$role_id);
+		$this->settings->set_userdata('username',$username );
+		
 
 		//fetch Locations
 		//save to set_userdata
 		
 
+		
 		try{
-			$url = DASH_API . '/v1/super-admin/location-list';
+			$url = DASH_API . '/v1/employee/location-list';
 	
   
-			
 			// $accessToken = $this->session->userdata('access_token');
 			$accessToken = $this->settings->userdata('token');
 				// print_r($accessToken); die;

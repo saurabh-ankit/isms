@@ -6,7 +6,19 @@
     object-position:center center;
   }
 </style>
-<h1 class="">Welcome, <?php echo $_settings->userdata('username')?>!</h1>
+    <?php
+// Start the session (if not already started)
+session_start();
+
+// Assuming 'username' is stored in the session
+if (isset($_SESSION['username'])) {
+    echo "<h1>Welcome, " . $_SESSION['name'] . "!</h1>";
+} else {
+    echo "<h1>Welcome, Guest!</h1>";
+}
+?>
+
+
 <hr>
 <div class="row">
   <div class="col-12 col-sm-4 col-md-4">
