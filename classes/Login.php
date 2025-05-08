@@ -38,7 +38,8 @@ class Login extends DBConnection {
 	}
 	public function logout(){
 		if($this->settings->sess_des()){
-			redirect('admin/login.php');
+			header('Location: '.base_url.'admin/login.php');
+			exit;
 		}
 	}
 	function login_customer(){
@@ -110,127 +111,111 @@ class Login extends DBConnection {
 		}
 	}
 	public function auth_inventory(){
-		
-
-
-		// print_r($loc_id); die;
-
-		$id =$_GET['platform_user_id'];
-		$url = 'http://roster.demo.reverely.ai//api/employee?id='.$id;
-		//http://roster.demo.reverely.ai/
-		$options = array(
-		'http' => array(
-			'method' => 'GET',
-			// Add headers if necessary
-			// 'header' => 'Content-type: application/json\r\n',
-			// 'header' => 'Authorization: Bearer your_access_token\r\n'
-		)
-		);
-		$context = stream_context_create($options);
-		$response = file_get_contents($url, false, $context);	
-
-
-		$decoded_response1 = json_decode($response, true);
+		try {
+			// Get parameters from the request
+			$id = isset($_GET['platform_user_id']) ? $_GET['platform_user_id'] : null;
+			$token = isset($_GET['token']) ? $_GET['token'] : null;
+			$loc_id = isset($_GET['loc_id']) ? $_GET['loc_id'] : null;
+			$role_id = isset($_GET['role_id']) ? $_GET['role_id'] : null;
 			
-			
+			// Make sure we have required parameters
+			if(!$id || !$token) {
+				// Redirect to login page if missing required parameters
+				header('Location: '.base_url.'admin/login.php');
+				exit;
+			}
 
-		$username = $decoded_response1['data']['name'];
-
-		// print_r($locations1); die;
-
-
-		$token = $_GET['token'];
-		$loc_id = $_GET['loc_id'];
-		$role_id =$_GET['role_id'];
-
-		$this->settings->set_userdata('token',$token);
-		$this->settings->set_userdata('loc_id',$loc_id);
-		$this->settings->set_userdata('role_id',$role_id);
-		$this->settings->set_userdata('username',$username );
-		
-
-		//fetch Locations
-		//save to set_userdata
-		
-
-		
-		try{
-			$url = DASH_API . '/v1/employee/location-list';
-	
-  
-			// $accessToken = $this->session->userdata('access_token');
-			$accessToken = $this->settings->userdata('token');
-				// print_r($accessToken); die;
-					// Headers
-			$headers = array(
-				'Accept: application/json',
-				'Authorization: Bearer ' . $accessToken
-			);
-		
-			// Set up HTTP headers
-			$header_str = implode("\r\n", $headers);
-		
-			// Set up stream context options
+			// Fetch employee data from roster API
+			$url = 'http://roster.demo.reverely.ai//api/employee?id='.$id;
 			$options = array(
 				'http' => array(
 					'method' => 'GET',
-					'header' => $header_str
+					'timeout' => 30
 				)
 			);
-		
-			// Create stream context
 			$context = stream_context_create($options);
-		
-			// Send HTTP request and get response
+			
 			$response = file_get_contents($url, false, $context);
-		
-			$decoded_response = json_decode($response, true);
+			if($response === FALSE) {
+				throw new Exception('Error fetching employee data');
+			}
 			
+			$decoded_response1 = json_decode($response, true);
+			if(!isset($decoded_response1['data']) || !isset($decoded_response1['data']['name'])) {
+				throw new Exception('Invalid employee data response');
+			}
 			
+			$username = $decoded_response1['data']['name'];
 
-			$locations = $decoded_response['resource']['data'];
-
-			$this->settings->set_userdata('locations',$locations);
+			// Set session data
+			$this->settings->set_userdata('token', $token);
+			$this->settings->set_userdata('loc_id', $loc_id);
+			$this->settings->set_userdata('role_id', $role_id);
+			$this->settings->set_userdata('username', $username);
+			$this->settings->set_userdata('login_type', 1);
+			$this->settings->set_userdata('type', 1);
 			
-
-		}catch(Exception $e){
-				print_r($e); die;
+			if(isset($decoded_response1['data']['image_url'])) {
+				$this->settings->set_userdata('avatar1', $decoded_response1['data']['image_url']);
+			}
+			
+			// Try to fetch locations, but continue even if it fails
+			try {
+				$this->getLocationData($token);
+			} catch(Exception $e) {
+				// Just log the error but continue
+				error_log('Failed to get location data: ' . $e->getMessage());
+			}
+			
+			// Redirect to admin dashboard
+			header('Location: '.base_url.'admin/index.php');
+			exit;
+			
+		} catch(Exception $e) {
+			// Log the error
+			error_log('Auth inventory error: ' . $e->getMessage());
+			
+			// Clear any partially set session data
+			if(isset($_SESSION['userdata'])) {
+				unset($_SESSION['userdata']);
+			}
+			
+			// Redirect to login page with error
+			header('Location: '.base_url.'admin/login.php?error=auth_failed');
+			exit;
 		}
+	}
 
-
-
-		$this->settings->set_userdata('type',1);
-
-
-
-		// die;	
-		  
-		// $username = 'admin';
-		// $password = 'admin123';
-		// $stmt = $this->conn->prepare("SELECT * from users where username = ? and password = ? ");
-		// $password = md5($password);
-		// $stmt->bind_param('ss',$username,$password);
-		// $stmt->execute();
-		// $result = $stmt->get_result();
-		// if($result->num_rows > 0){
-
-			$responseArray = json_decode($response, true);
-			 //print_r($responseArray);die;
-				// Access the 'data' array
-			$dataArray = $responseArray['data'];
-
-			
-			
-		//print_r($response);die;
-		$this->settings->set_userdata('avatar1',$responseArray['data']['image_url']);
-		$this->settings->set_userdata('username',$responseArray['data']['name']);
-		$this->settings->set_userdata('login_type',1);
-		$this->settings->set_userdata('username',$responseArray['data']->name);
-		header('location:'.base_url.'admin/');
-		return json_encode(array('status'=>'success'));
-		//}else{
-		return json_encode(array('status'=>'incorrect','last_qry'=>"SELECT * from users where username = '$username' and password = md5('$password') "));
-		//}
+	private function getLocationData($token) {
+		$url = DASH_API . '/v1/employee/location-list';
+		
+		$headers = array(
+			'Accept: application/json',
+			'Authorization: Bearer ' . $token
+		);
+		
+		$header_str = implode("\r\n", $headers);
+		$options = array(
+			'http' => array(
+				'method' => 'GET',
+				'header' => $header_str,
+				'timeout' => 30
+			)
+		);
+		
+		$context = stream_context_create($options);
+		$response = file_get_contents($url, false, $context);
+		
+		if($response === FALSE) {
+			throw new Exception('Error fetching location data');
+		}
+		
+		$decoded_response = json_decode($response, true);
+		
+		if(isset($decoded_response['resource']) && isset($decoded_response['resource']['data'])) {
+			$locations = $decoded_response['resource']['data'];
+			$this->settings->set_userdata('locations', $locations);
+		}
 	}
 }
 $action = !isset($_GET['f']) ? 'none' : strtolower($_GET['f']);
@@ -249,7 +234,7 @@ switch ($action) {
 		echo $auth->logout_customer();
 		break;
 	case 'auth_inventory':
-		echo $auth->auth_inventory();
+		$auth->auth_inventory();
 		break;
 	default:
 		echo $auth->index();

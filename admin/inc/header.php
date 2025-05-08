@@ -54,4 +54,31 @@
     </script>
     <script src="<?php echo base_url ?>dist/js/script.js"></script>
     <?php //echo html_entity_decode($_settings->load_data()); ?>
-  </head>
+
+    <!-- Chakra UI CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@chakra-ui/css@1.0.0/dist/chakra-ui.css">
+    <link rel="stylesheet" href="<?php echo base_url ?>dist/css/chakra-custom.css">
+    
+    <!-- Mobile menu toggle button -->
+    <style>
+        #sidebarToggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: var(--chakra-colors-gray-700);
+            padding: 0.25rem;
+            margin-right: 0.5rem;
+            z-index: 1060;
+        }
+        
+        @media (max-width: 768px) {
+            #sidebarToggle {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>

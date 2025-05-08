@@ -48,7 +48,7 @@ alert_toast("<?php echo $_settings->flashdata('success') ?>", 'success')
                 <tbody>
                     <?php 
 					$i = 1;
-						$qry = $conn->query("SELECT * from `vendor_list` where loc_id=" . $_settings->userdata('loc_id') . "");
+						$qry = $conn->query("SELECT * FROM `vendor_list` ORDER BY `date_updated` DESC");
 						while($row = $qry->fetch_assoc()):
 					?>
                     <tr>

@@ -1,0 +1,545 @@
+/* 
+* Chakra UI Custom Styles for ISMS
+*/
+
+/* Color palette */
+:root {
+    --chakra-colors-teal-700: #063F46;
+    --chakra-colors-teal-600: #075963;
+    --chakra-colors-teal-500: #086b77;
+    --chakra-colors-teal-400: #0a7c8a;
+    --chakra-colors-teal-300: #38B2AC;
+    --chakra-colors-teal-200: #81E6D9;
+    --chakra-colors-gray-100: #f7fafc;
+    --chakra-colors-gray-200: #edf2f7;
+    --chakra-colors-gray-300: #e2e8f0;
+    --chakra-colors-gray-400: #cbd5e0;
+    --chakra-colors-gray-500: #a0aec0;
+    --chakra-colors-gray-600: #718096;
+    --chakra-colors-gray-700: #4a5568;
+    --chakra-colors-gray-800: #2d3748;
+    --chakra-colors-gray-900: #1a202c;
+    --chakra-colors-orange-500: #e97e1c;
+    
+    /* Custom sidebar colors */
+    --sidebar-bg: #075963;
+    --sidebar-active-bg: #154954;
+    --sidebar-hover-bg: #063F46;
+    --sidebar-submenu-bg: #1d5963;
+}
+
+/* Base styles */
+.chakra-ui {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    color: var(--chakra-colors-gray-800);
+    line-height: 1.5;
+}
+
+/* Layout components */
+.chakra-responsive-layout {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    width: 100%;
+}
+
+/* Sidebar */
+
+.chakra-sidebar {
+    /* position: firexed; */
+    position: relative;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 78px;
+    max-width: 250px;
+    min-width: auto;
+    background-color: var(--sidebar-bg);
+    color: white;
+    transition: all 0.3s;
+    z-index: 0;
+    overflow-y: auto;
+    height: auto;
+}
+
+.chakra-sidebar a.nav-link,
+.chakra-sidebar .menu-header.nav-link {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    color: white;
+    text-decoration: none;
+    transition: background-color 0.2s;
+}
+
+.chakra-sidebar a.nav-link:hover,
+.chakra-sidebar .menu-header:hover {
+    background-color: var(--sidebar-hover-bg) !important;
+    color: var(--chakra-colors-orange-500) !important;
+}
+
+.chakra-sidebar a.active-menu-item,
+.chakra-sidebar .menu-header.active-menu-item {
+    background-color: var(--sidebar-active-bg) !important;
+    color: var(--chakra-colors-orange-500) !important;
+    font-weight: 600;
+}
+
+/* Brand section */
+.brand-section {
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.brand-logo {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    margin-right: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    color: var(--sidebar-bg);
+    font-weight: bold;
+    font-size: 1.25rem;
+}
+
+.brand-name {
+    color: white;
+    font-weight: 600;
+    font-size: 1.125rem;
+}
+
+/* Section divider */
+.section-divider {
+    padding: 0.75rem 0.1rem;
+    font-size: 9px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+/* Dropdown menu styling */
+.chakra-sidebar .submenu {
+    background-color: var(--sidebar-submenu-bg);
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.chakra-sidebar .submenu a {
+    padding-left: 0rem !important;
+}
+
+.chakra-sidebar .submenu a:hover {
+    background-color: var(--sidebar-hover-bg) !important;
+}
+
+.chakra-sidebar .menu-header {
+    cursor: pointer;
+}
+
+.chakra-sidebar .menu-header .fa-angle-down {
+    transition: transform 0.3s ease;
+}
+
+.chakra-sidebar .menu-header.active .fa-angle-down {
+    transform: rotate(180deg);
+}
+
+/* Menu icons */
+.chakra-sidebar .nav-icon {
+    width: 20px;
+    text-align: center;
+    /* margin-right: 0rem; */
+}
+
+/* Main content */
+.chakra-main {
+    /* margin-left: 260px; */
+    margin-left: 0px;
+    transition: all 0.3s;
+    width: 100%;
+    max-width: 100%;
+    min-width: auto;
+    /* width: calc(100% - 260px); */
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* Content area should take available space */
+.content-area {
+    flex: 1;
+    overflow-y: auto;
+}
+
+/* Footer */
+.chakra-footer {
+    background-color: white;
+    padding: 1rem;
+    text-align: center;
+    border-top: 1px solid var(--chakra-colors-gray-200);
+    width: 100%;
+    position: relative;
+    z-index: 100;
+    margin-top: auto;
+}
+
+@media (max-width: 768px) {
+    /* Hide footer on mobile when viewing tables for more space */
+    .chakra-ui-table-view .chakra-footer {
+        display: none;
+    }
+    
+    .data-table-page .chakra-footer {
+        display: none;
+    }
+    
+    /* Adjust padding for table pages */
+    .table-view-content {
+        padding-bottom: 0 !important;
+    }
+    
+    /* Give more space to table content */
+    .content-area {
+        padding: 0.75rem !important;
+    }
+}
+
+/* Top header sticky */
+.top-header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    width: 100%;
+}
+
+/* Layout container */
+.main-container {
+    display: flex;
+    flex-direction: row;
+    height: auto;
+    flex: 1;
+    width: 100%;
+    min-height: calc(100vh - 12rem);
+}
+
+/* Header */
+.chakra-header {
+    position: sticky;
+    top: 0;
+    background-color: white;
+    border-bottom: 1px solid var(--chakra-colors-gray-200);
+    padding: 0.75rem 1rem;
+    z-index: 900;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    width: 100%;
+}
+
+/* Content container */
+.chakra-container {
+    width: 100%;
+    padding: 1.5rem;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Card-like containers */
+.chakra-card {
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Button styles */
+.chakra-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    font-weight: 500;
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+.chakra-button-primary {
+    background-color: var(--chakra-colors-teal-500);
+    color: white;
+    border: none;
+}
+
+.chakra-button-primary:hover {
+    background-color: var(--chakra-colors-teal-600);
+}
+
+/* Forms */
+.chakra-select {
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    border: 1px solid var(--chakra-colors-gray-300);
+    background-color: white;
+    transition: all 0.2s;
+}
+
+.chakra-select-teal {
+    background-color: var(--chakra-colors-teal-500);
+    color: white;
+    border: none;
+}
+
+/* Avatar */
+.chakra-avatar {
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* Hide hamburger on desktop */
+#sidebarToggle {
+    display: none;
+}
+
+/* Mobile responsive styles */
+@media (max-width: 768px) {
+    .chakra-sidebar {
+        position: fixed !important;
+        width: 78px !important;
+        max-width: 250px !important;
+        min-width: auto !important;
+        z-index: 1050 !important;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+    }
+    
+    .chakra-sidebar.show {
+        transform: translateX(0);
+    }
+    
+    .chakra-main {
+        width: 100% !important;
+        margin-left: 0 !important;
+    }
+    
+    .main-container {
+        flex-direction: column;
+    }
+    
+    .top-header {
+        padding: 0.5rem !important;
+    }
+    
+    .top-header h1 {
+        font-size: 1rem !important;
+        max-width: 180px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    .site-logo img {
+        height: 2rem !important;
+        margin-right: 0.5rem !important;
+    }
+    
+    .location-selector {
+        display: none;
+    }
+    
+    #sidebarToggle {
+        display: flex !important;
+    }
+}
+
+/* Active sidebar item styling */
+.chakra-sidebar a.active-menu-item {
+    background-color: var(--chakra-colors-teal-700) !important;
+    color: var(--chakra-colors-orange-500) !important;
+    font-weight: 600;
+}
+
+/* Circle icons in submenu */
+.circle-icon {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    border: 2px solid white;
+    margin-right: 0.75rem;
+}
+
+/* Active circle icon */
+.active-menu-item .circle-icon {
+    background-color: var(--chakra-colors-orange-500);
+    border-color: var(--chakra-colors-orange-500);
+}
+
+/* Report pages styling */
+.content.py-5.px-3.bg-teal {
+    background-color: var(--chakra-colors-teal-500);
+    color: white;
+    border-radius: 0.375rem 0.375rem 0 0;
+    margin-bottom: 0;
+}
+
+.content.py-5.px-3.bg-teal h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+/* Ensure fieldset and legend in reports look good */
+fieldset {
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+fieldset legend {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--chakra-colors-gray-700);
+}
+
+/* Fix report tables */
+.table-bordered {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.table-bordered th,
+.table-bordered td {
+    border: 1px solid var(--chakra-colors-gray-200);
+    padding: 0.5rem;
+}
+
+.table-bordered thead th {
+    background-color: var(--chakra-colors-gray-100);
+    font-weight: 600;
+}
+
+/* Responsive tables */
+@media (max-width: 768px) {
+    .table-responsive {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .table-bordered {
+        min-width: 650px;
+    }
+    
+    .card {
+        overflow: hidden;
+    }
+    
+    .dataTable {
+        width: 100% !important;
+    }
+    
+    div.dataTables_wrapper div.dataTables_filter {
+        text-align: left !important;
+        margin-top: 0.5rem;
+    }
+    
+    div.dataTables_wrapper div.dataTables_length,
+    div.dataTables_wrapper div.dataTables_filter,
+    div.dataTables_wrapper div.dataTables_info,
+    div.dataTables_wrapper div.dataTables_paginate {
+        text-align: left !important;
+        margin-bottom: 0.5rem;
+    }
+}
+
+/* Extended mobile table styles */
+@media (max-width: 768px) {
+    /* Better table scrolling experience */
+    .table-responsive {
+        border: none;
+        margin-bottom: 1rem;
+        box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+    
+    /* Smaller fonts for mobile */
+    .table-bordered {
+        font-size: 0.9rem;
+    }
+    
+    /* Table header and cell spacing */
+    .table th, .table td {
+        padding: 0.5rem 0.75rem;
+        vertical-align: middle;
+    }
+    
+    /* Improve action buttons on mobile */
+    .dropdown-toggle {
+        white-space: nowrap;
+        padding: 0.25rem 0.5rem !important;
+    }
+    
+    /* Filter forms in report pages */
+    .card-body fieldset .row {
+        margin: 0 -5px;
+    }
+    
+    .card-body fieldset .col-lg-3,
+    .card-body fieldset .col-md-6,
+    .card-body fieldset .col-lg-1 {
+        padding: 0 5px;
+    }
+    
+    /* Make action buttons more tappable */
+    .btn {
+        min-height: 34px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    /* Give more space to table content */
+    .content-area {
+        padding: 0.75rem !important;
+    }
+    
+    /* Hide footer on table pages */
+    .data-table-page .chakra-footer {
+        display: none;
+    }
+}
+
+/* Ensure content area takes full height */
+.content-area {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+/* Sidebar navigation container */
+.sidebar-nav {
+    padding: 0.5rem 0;
+    width: 78px;
+    max-width: 250px;
+    min-width: auto;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+@media (max-width: 768px) {
+    .sidebar-nav {
+        width: 78px !important;
+        max-width: 250px !important;
+        min-width: auto !important;
+    }
+} 

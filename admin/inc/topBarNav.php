@@ -11,79 +11,55 @@
         border-radius: 50px;
   }
 </style>
-<!-- Navbar -->
-      <nav class="main-header navbar navbar-expand navbar-light shadow text-sm">
-        <!-- Left navbar links -->
-        <ul class="navbar-nav">
-          <li class="nav-item">
-          <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-          </li>
-          <li class="nav-item d-none d-sm-inline-block">
-            <a href="<?php echo base_url ?>" class="nav-link"><?php echo (!isMobileDevice()) ? $_settings->info('name'):$_settings->info('short_name'); ?> - Admin</a>
-          </li>
-        </ul>
-        <!-- Right navbar links -->
-        <ul class="navbar-nav ml-auto">
-          <!-- Navbar Search -->
-          <!-- <li class="nav-item">
-            <a class="nav-link" data-widget="navbar-search" href="#" role="button">
-            <i class="fas fa-search"></i>
+<!-- Top Navigation Bar with Chakra UI styling -->
+<header class="chakra-header">
+    <div class="chakra-stack chakra-stack--horizontal" style="width: 100%; justify-content: space-between;">
+        <!-- Left side - Menu toggle and brand -->
+        <div class="chakra-stack chakra-stack--horizontal" style="align-items: center;">
+            <button id="sidebarToggle" style="background: none; border: none; cursor: pointer; margin-right: 1rem; display: none; align-items: center; justify-content: center; padding: 0.5rem; border-radius: 0.375rem; color: var(--chakra-colors-gray-700);">
+                <i class="fas fa-bars" style="font-size: 1.25rem;"></i>
+            </button>
+            
+            <a href="<?php echo base_url ?>" style="text-decoration: none; color: var(--chakra-colors-gray-800); font-weight: 600; font-size: 1.125rem;">
+                <?php echo (!isMobileDevice()) ? $_settings->info('name') : $_settings->info('short_name'); ?> - Admin
             </a>
-            <div class="navbar-search-block">
-              <form class="form-inline">
-                <div class="input-group input-group-sm">
-                  <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
-                  <div class="input-group-append">
-                    <button class="btn btn-navbar" type="submit">
-                    <i class="fas fa-search"></i>
-                    </button>
-                    <button class="btn btn-navbar" type="button" data-widget="navbar-search">
-                    <i class="fas fa-times"></i>
-                    </button>
-                  </div>
-                </div>
-              </form>
+        </div>
+        
+        <!-- Right side - Location selector and user info -->
+        <div class="chakra-stack chakra-stack--horizontal" style="align-items: center;">
+            <!-- Location selector -->
+            <div class="location-selector" style="margin-right: 1.5rem;">
+                <select onchange="changeLocation()" id="location-select" style="padding: 0.5rem 1rem; border-radius: 0.375rem; border: 1px solid var(--chakra-colors-gray-300); background-color: var(--chakra-colors-teal-500); color: white; font-size: 0.875rem;">
+                    <option>Select Location</option>
+                    <?php 
+                    $locations = $_settings->userdata('locations');
+                    if(isset($locations) && is_array($locations)): 
+                    ?>
+                        <?php foreach ($locations as $values): ?>
+                            <option value="<?php echo $values['id'] ?>" <?php if($_settings->userdata('loc_id') == $values['id']) echo 'selected' ?>>
+                                <?php echo $values['name'] ?>
+                            </option>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </select>
             </div>
-          </li> -->
-          <!-- Messages Dropdown Menu -->
-          <li class="nav-item">
-          <li class="nav-item mx-4" style='margin-right:15px'>
-          <select  onchange='changeLocation()'  id="location-select" class=' form-select custom-select text-white  bg-info  '>
-                                <option>Select Location</option>
-                                <?Php foreach ($_settings->userdata('locations') as $values): ?>
-                                    <option value="<?php echo $values['id'] ?>"    
-                                    
-                                    <?php if($_settings->userdata('loc_id') == $values['id'] ) echo 'selected'  ?> >
-                                        <?php echo $values['name'] ?>
-                                    </option>
-                                    <?php endforeach; ?>
-                            </select>
-          </li>
-            <div class="btn-group nav-link">
-                  <!-- <button type="button" class="btn btn-rounded badge badge-light dropdown-toggle dropdown-icon" data-toggle="dropdown"> -->
-                    <span><img  src="<?php echo validate_image($_settings->userdata('avatar1')) ?>" class="img-circle  p-0 elevation-1 user-img mt-2" alt="User Image"></span>
-                    <span class="mb-2 ml-3 text-bold"><?php echo ucwords($_settings->userdata('username').' '.$_settings->userdata('lastname')) ?></span>
-                  <!-- </button> -->
-                  <!-- <div class="dropdown-menu" role="menu"> -->
-                    <!-- <a class="dropdown-item" href="<?php echo base_url.'admin/?page=user' ?>"><span class="fa fa-user"></span> My Account</a> -->
-                  <!-- </div> -->
-              </div>
-          </li>
-          
-         <!--  <li class="nav-item">
-            <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
-            <i class="fas fa-th-large"></i>
-            </a>
-          </li> -->
-        </ul>
-      </nav>
-      <!-- /.navbar -->
+            
+            <!-- User profile -->
+            <div class="user-profile chakra-stack chakra-stack--horizontal" style="align-items: center;">
+                <div class="user-avatar" style="position: relative; margin-right: 0.75rem;">
+                    <img src="<?php echo validate_image($_settings->userdata('avatar1')) ?>" alt="User Avatar" style="width: 2.5rem; height: 2.5rem; border-radius: 50%; object-fit: cover; border: 2px solid var(--chakra-colors-gray-200);">
+                </div>
+                <div class="user-info">
+                    <span style="font-weight: 600; color: var(--chakra-colors-gray-800);">
+                        <?php echo ucwords($_settings->userdata('username').' '.$_settings->userdata('lastname')) ?>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
 
-
-    <script>
-
-
-
+<script>
 function changeLocation() {
     $loc_id = document.getElementById('location-select').value
     start_loader();
@@ -110,4 +86,22 @@ function changeLocation() {
     })
 }
 
-    </script>
+// Apply responsive design for hamburger button visibility
+document.addEventListener('DOMContentLoaded', function() {
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    
+    function adjustMenuVisibility() {
+        if (window.innerWidth <= 768) {
+            sidebarToggle.style.display = 'flex';
+        } else {
+            sidebarToggle.style.display = 'none';
+        }
+    }
+    
+    // Run on load
+    adjustMenuVisibility();
+    
+    // Run on window resize
+    window.addEventListener('resize', adjustMenuVisibility);
+});
+</script>

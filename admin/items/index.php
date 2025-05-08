@@ -43,7 +43,7 @@ alert_toast("<?php echo $_settings->flashdata('success') ?>", 'success')
                 <tbody>
                     <?php 
 					$i = 1;
-                        $qry = $conn->query("SELECT i.*, c.name as `category` from `item_list` i inner join category_list c on i.category_id = c.id where i.delete_flag = 0 AND i.loc_id=" . $_settings->userdata('loc_id') . " order by i.`date_created` desc ");
+                        $qry = $conn->query("SELECT i.*, c.name as `category` FROM `item_list` i INNER JOIN `category_list` c ON i.category_id = c.id WHERE i.delete_flag = 0 ORDER BY i.date_created DESC");
                         while($row = $qry->fetch_assoc()):
                 ?>
 				

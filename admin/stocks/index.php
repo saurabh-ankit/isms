@@ -39,7 +39,14 @@
 				<tbody>
 					<?php 
 					$i = 1;
-						$qry = $conn->query("SELECT i.*, c.name as `category`,( COALESCE((SELECT SUM(quantity) FROM `stockin_list` where item_id = i.id),0) - COALESCE((SELECT SUM(quantity) FROM `stockout_list` where item_id = i.id),0) - COALESCE((SELECT SUM(quantity) FROM `waste_list` where item_id = i.id),0) ) as `available` from `item_list` i inner join category_list c on i.category_id = c.id where i.delete_flag = 0 AND i.loc_id=" . $_settings->userdata('loc_id') . " order by i.`name` asc ");
+						$qry = $conn->query("SELECT i.*, c.name as `category`,
+                            (COALESCE((SELECT SUM(quantity) FROM `stockin_list` WHERE item_id = i.id), 0) - 
+                            COALESCE((SELECT SUM(quantity) FROM `stockout_list` WHERE item_id = i.id), 0) - 
+                            COALESCE((SELECT SUM(quantity) FROM `waste_list` WHERE item_id = i.id), 0)) as `available` 
+                            FROM `item_list` i 
+                            INNER JOIN `category_list` c ON i.category_id = c.id 
+                            WHERE i.delete_flag = 0 
+                            ORDER BY i.name ASC");
 						while($row = $qry->fetch_assoc()):
 					?>
 						<tr>

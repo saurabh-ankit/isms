@@ -2,7 +2,11 @@
 ob_start();
 ini_set('date.timezone','Asia/Manila');
 date_default_timezone_set('Asia/Manila');
-session_start();
+
+// Only start session if one doesn't already exist
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 
 require_once('initialize.php');
 require_once('classes/DBConnection.php');
@@ -10,8 +14,11 @@ require_once('classes/SystemSettings.php');
 $db = new DBConnection;
 $conn = $db->conn;
 function redirect($url=''){
-	if(!empty($url))
-	echo '<script>location.href="'.base_url .$url.'"</script>';
+	if(!empty($url)) {
+		// Use PHP header redirect instead of JavaScript
+		header('Location: '.base_url.$url);
+		exit;
+	}
 }
 function validate_image($file){
     global $_settings;

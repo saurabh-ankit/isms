@@ -3,8 +3,39 @@ $start_date = isset($_GET['start_date']) ? date('Y-m-01', strtotime($_GET['start
 $end_date = isset($_GET['end_date']) ? date('Y-m-t', strtotime($_GET['end_date'])) : date('Y-m-t');
 $item_id = isset($_GET['item_id']) ? $_GET['item_id'] : null;
 ?>
+<style>
+/* Mobile styles for tables */
+@media (max-width: 768px) {
+    .table-responsive {
+        margin-bottom: 0;
+        border: none;
+    }
+    
+    .table {
+        font-size: 0.9rem;
+    }
+    
+    .card-body {
+        padding: 0.75rem;
+    }
+    
+    .form-group {
+        margin-bottom: 0.5rem;
+    }
+    
+    /* Hide footer on mobile */
+    .chakra-footer {
+        display: none !important;
+    }
+    
+    /* More visible filter button */
+    .btn-primary {
+        width: 100%;
+    }
+}
+</style>
 <div class="content py-5 px-3 bg-teal">
-    <h2>Monthly Waste Reports</h2>
+    <h2>Monthly Stock-Waste Report</h2>
 </div>
 <div class="row flex-column mt-4 justify-content-center align-items-center mt-lg-n4 mt-md-3 mt-sm-0">
     <div class="col-lg-11 col-md-11 col-sm-12 col-xs-12">
@@ -14,21 +45,21 @@ $item_id = isset($_GET['item_id']) ? $_GET['item_id'] : null;
                     <legend>Filter</legend>
                     <form action="" id="filter-form">
                         <div class="row align-items-end">
-                            <div class="col-lg-3 col-md-6 col-sm-12 col-xs-12">
+                            <div class="col-lg-3 col-md-6 col-sm-12 col-xs-12 mb-2">
                                 <div class="form-group">
                                     <label for="start_date" class="control-label">Start Date</label>
                                     <input type="date" class="form-control form-control-sm rounded-0" name="start_date"
                                     id="start_date" value="<?= $start_date ?>" required="required">
                                 </div>
                             </div>
-                            <div class="col-lg-3 col-md-6 col-sm-12 col-xs-12">
+                            <div class="col-lg-3 col-md-6 col-sm-12 col-xs-12 mb-2">
                                 <div class="form-group">
                                     <label for="end_date" class="control-label">End Date</label>
                                     <input type="date" class="form-control form-control-sm rounded-0" name="end_date"
                                         id="end_date" required="required" value="<?= $end_date ?>">
                                 </div>
                             </div>
-                            <div class="col-lg-3 col-md-6 col-sm-12 col-xs-12">
+                            <div class="col-lg-3 col-md-6 col-sm-12 col-xs-12 mb-2">
                                 <div class="form-group">
                                     <label for="item_id" class="control-label">Select Item</label>
                                     <select name="item_id" id="item_id" class="form-control form-control-sm rounded-0">
@@ -45,9 +76,9 @@ $item_id = isset($_GET['item_id']) ? $_GET['item_id'] : null;
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-lg-1 col-md-6 col-sm-12 col-xs-12">
+                            <div class="col-lg-1 col-md-6 col-sm-12 col-xs-12 mb-2">
                                 <div class="form-group">
-                                    <button class="btn btn-sm btn-flat btn-primary bg-gradient-primary"><i
+                                    <button class="btn btn-sm btn-flat btn-primary bg-gradient-primary w-100"><i
                                             class="fa fa-filter"></i> Filter</button>
                                 </div>
                             </div>
@@ -67,59 +98,62 @@ $item_id = isset($_GET['item_id']) ? $_GET['item_id'] : null;
             </div>
             <div class="card-body">
                 <div class="container-fluid" id="printout">
-                    <table class="table table-bordered">
-                        <colgroup>
-                            <col width="10%">
-                            <col width="15%">
-                            <col width="30%">
-                            <col width="15%">
-                            <col width="30%">
-                        </colgroup>
-                        <thead>
-                            <tr>
-                                <th class="px-1 py-1 text-center">#</th>
-                                <th class="px-1 py-1 text-center">Date</th>
-                                <th class="px-1 py-1 text-center">Item</th>
-                                <th class="px-1 py-1 text-center">Quantity</th>
-                                <th class="px-1 py-1 text-center">Rate</th>
-                                <th class="px-1 py-1 text-center">Remarks</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php 
-                            $g_total = 0;
-                            $i = 1;
-                            $stock = $conn->query("SELECT s.*, i.name as `item`, c.name as `category`, i.unit FROM `waste_list` s 
-                            inner join `item_list` i on s.item_id = i.id 
-                            inner join category_list c on i.category_id = c.id 
-                            where (s.date BETWEEN '{$start_date}' AND '{$end_date}')
-                            AND (s.item_id = '{$item_id}' OR '{$item_id}' = '')
-                            order by date(s.`date`) asc");
-                            while($row = $stock->fetch_assoc()):
-
-                            ?>
-                            <tr>
-                                <td class="px-1 py-1 align-middle text-center"><?= $i++ ?></td>
-                                <td class="px-1 py-1 align-middle"><?= date("F d, Y", strtotime($row['date'])) ?></td>
-                                <td class="px-1 py-1 align-middle">
-                                    <div line-height="1em">
-                                        <div class="font-weight-bold"><?= $row['item'] ?> [<?= $row['unit'] ?>]</div>
-                                        <div class="font-weight-light"><?= $row['category'] ?></div>
-                                    </div>
-                                </td>
-                                <td class="px-1 py-1 align-middle text-right"><?= format_num($row['quantity']) ?></td>
-                                <td class="px-1 py-1 align-middle text-right"><?= format_num($row['rate']) ?></td>
-                                <td class="px-1 py-1 align-middle"><?= $row['remarks'] ?></td>
-                                
-                            </tr>
-                            <?php endwhile; ?>
-                            <?php if($stock->num_rows <= 0): ?>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <colgroup>
+                                <col width="10%">
+                                <col width="15%">
+                                <col width="30%">
+                                <col width="15%">
+                                <col width="15%">
+                                <col width="15%">
+                            </colgroup>
+                            <thead>
                                 <tr>
-                                    <td class="py-1 text-center" colspan="5">No records found</td>
+                                    <th class="px-1 py-1 text-center">#</th>
+                                    <th class="px-1 py-1 text-center">Date</th>
+                                    <th class="px-1 py-1 text-center">Item</th>
+                                    <th class="px-1 py-1 text-center">Quantity</th>
+                                    <th class="px-1 py-1 text-center">Rate</th>
+                                    <th class="px-1 py-1 text-center">Remarks</th>
                                 </tr>
-                            <?php endif; ?>
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                <?php 
+                                $g_total = 0;
+                                $i = 1;
+                                $stock = $conn->query("SELECT s.*, i.name as `item`, c.name as `category`, i.unit FROM `waste_list` s 
+                                inner join `item_list` i on s.item_id = i.id 
+                                inner join category_list c on i.category_id = c.id 
+                                where (s.date BETWEEN '{$start_date}' AND '{$end_date}')
+                                AND (s.item_id = '{$item_id}' OR '{$item_id}' = '')
+                                order by date(s.`date`) asc");
+                                while($row = $stock->fetch_assoc()):
+
+                                ?>
+                                <tr>
+                                    <td class="px-1 py-1 align-middle text-center"><?= $i++ ?></td>
+                                    <td class="px-1 py-1 align-middle"><?= date("F d, Y", strtotime($row['date'])) ?></td>
+                                    <td class="px-1 py-1 align-middle">
+                                        <div line-height="1em">
+                                            <div class="font-weight-bold"><?= $row['item'] ?> [<?= $row['unit'] ?>]</div>
+                                            <div class="font-weight-light"><?= $row['category'] ?></div>
+                                        </div>
+                                    </td>
+                                    <td class="px-1 py-1 align-middle text-right"><?= format_num($row['quantity']) ?></td>
+                                    <td class="px-1 py-1 align-middle text-right"><?= format_num($row['rate']) ?></td>
+                                    <td class="px-1 py-1 align-middle"><?= $row['remarks'] ?></td>
+                                    
+                                </tr>
+                                <?php endwhile; ?>
+                                <?php if($stock->num_rows <= 0): ?>
+                                    <tr>
+                                        <td class="py-1 text-center" colspan="6">No records found</td>
+                                    </tr>
+                                <?php endif; ?>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -143,10 +177,11 @@ $item_id = isset($_GET['item_id']) ? $_GET['item_id'] : null;
                         <large><?= $_settings->info('name') ?></large>
                     </div>
                     <div class="text-center font-weight-bold h5 mb-0">
-                        <large>Monthly Waste Report</large>
+                        <large>Monthly Stock-Waste Report</large>
                     </div>
-                    <div class="text-center font-weight-bold h5 mb-0">as of <?= date("F Y", strtotime($month."-01")) ?>
-                </div>
+                    <div class="text-center font-weight-bold h5 mb-0">
+                        as of <?= date("F Y", strtotime($start_date)) ?>
+                    </div>
                 </div>
             </div>
         </div>
@@ -154,11 +189,16 @@ $item_id = isset($_GET['item_id']) ? $_GET['item_id'] : null;
     </div>
 </noscript>
 <script>
+    // Add data-table-page class to body to hide footer on mobile
+    $(document).ready(function() {
+        $('body').addClass('data-table-page');
+    });
+    
     function print_r(){
         var h = $('head').clone()
         var el = $('#printout').clone()
         var ph = $($('noscript#print-header').html()).clone()
-        h.find('title').text("Monthly Waste Report - Print View")
+        h.find('title').text("Monthly Stock-Waste Report - Print View")
         var nw = window.open("", "_blank", "width="+($(window).width() * .8)+",left="+($(window).width() * .1)+
             ",height="+($(window).height() * .8)+",top="+($(window).height() * .1))
             nw.document.querySelector('head').innerHTML = h.html()
@@ -182,6 +222,5 @@ $item_id = isset($_GET['item_id']) ? $_GET['item_id'] : null;
         $('#print').click(function(){
             print_r()
         })
-
     })
 </script>

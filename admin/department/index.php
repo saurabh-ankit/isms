@@ -10,6 +10,33 @@ alert_toast("<?php echo $_settings->flashdata('success') ?>", 'success')
     object-fit: cover;
     object-position: center center;
 }
+
+/* Mobile styles for tables */
+@media (max-width: 768px) {
+    .table-responsive {
+        margin-bottom: 0;
+        border: none;
+    }
+    
+    .table {
+        font-size: 0.9rem;
+    }
+    
+    .card-body {
+        padding: 0.75rem;
+    }
+    
+    /* Hide footer on mobile */
+    .chakra-footer {
+        display: none !important;
+    }
+    
+    /* Better dropdown placement */
+    .dropdown-menu {
+        left: auto;
+        right: 0;
+    }
+}
 </style>
 <div class="card card-outline rounded-0 card-teal">
     <div class="card-header">
@@ -21,76 +48,81 @@ alert_toast("<?php echo $_settings->flashdata('success') ?>", 'success')
     </div>
     <div class="card-body">
         <div class="container-fluid">
-            <table class="table table-hover table-striped table-bordered" id="list">
-                <colgroup>
-                    <col width="5%">
-                    <col width="15%">
-                    <col width="25%">
-                    <col width="35%">
-                    <col width="10%">
-                    <col width="10%">
-                </colgroup>
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Date Created</th>
-                        <th>Name</th>
-                        <th>Description</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php 
-					$i = 1;
-                    $qry = $conn->query("SELECT * FROM `department_list` WHERE delete_flag = 0 AND loc_id=" . $_settings->userdata('loc_id') . " ORDER BY `date_created` DESC");
-                    while($row = $qry->fetch_assoc()):
-					?>
-                    <tr>
-                        <td class="text-center serial-number"><?php echo $i++; ?></td>
-                        <td><?php echo date("Y-m-d ",strtotime($row['date_created'])) ?></td>
-                        <td class=""><?= $row['name'] ?></td>
-                        <td class="">
-                            <p class="mb-0 truncate-1"><?= strip_tags(htmlspecialchars_decode($row['description'])) ?>
-                            </p>
-                        </td>
-                        <td class="text-center">
-                            <?php if($row['status'] == 1): ?>
-                            <span class="badge badge-success px-3 rounded-pill">Active</span>
-                            <?php else: ?>
-                            <span class="badge badge-danger px-3 rounded-pill">Inactive</span>
-                            <?php endif; ?>
-                        </td>
-                        <td align="center">
-                            <button type="button"
-                                class="btn btn-flat p-1 btn-default btn-sm dropdown-toggle dropdown-icon"
-                                data-toggle="dropdown">
-                                Action
-                                <span class="sr-only">Toggle Dropdown</span>
-                            </button>
-                            <div class="dropdown-menu" role="menu">
-                                <!-- <a class="dropdown-item view-data" href="javascript:void(0)"
-                                    data-id="<?php echo $row['id'] ?>"><span class="fa fa-eye text-dark"></span>
-                                    View</a> -->
-                                <!-- <div class="dropdown-divider"></div> -->
-                                <a class="dropdown-item edit-data" href="javascript:void(0)"
-                                    data-id="<?php echo $row['id'] ?>"><span class="fa fa-edit text-primary"></span>
-                                    Edit</a>
-                                <div class="dropdown-divider"></div>
-                                 <a class="dropdown-item delete_data" href="javascript:void(0)"
-                                    data-id="<?php echo $row['id'] ?>"><span class="fa fa-trash text-danger"></span>
-                                    Delete</a>
-                            </div>
-                        </td>
-                    </tr>
-                    <?php endwhile; ?>
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="table table-hover table-striped table-bordered" id="list">
+                    <colgroup>
+                        <col width="5%">
+                        <col width="15%">
+                        <col width="25%">
+                        <col width="35%">
+                        <col width="10%">
+                        <col width="10%">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Date Created</th>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php 
+						$i = 1;
+                        $qry = $conn->query("SELECT * FROM `department_list` WHERE `delete_flag` = 0 ORDER BY `date_created` DESC");
+                        while($row = $qry->fetch_assoc()):
+						?>
+                        <tr>
+                            <td class="text-center serial-number"><?php echo $i++; ?></td>
+                            <td><?php echo date("Y-m-d ",strtotime($row['date_created'])) ?></td>
+                            <td class=""><?= $row['name'] ?></td>
+                            <td class="">
+                                <p class="mb-0 truncate-1"><?= strip_tags(htmlspecialchars_decode($row['description'])) ?>
+                                </p>
+                            </td>
+                            <td class="text-center">
+                                <?php if($row['status'] == 1): ?>
+                                <span class="badge badge-success px-3 rounded-pill">Active</span>
+                                <?php else: ?>
+                                <span class="badge badge-danger px-3 rounded-pill">Inactive</span>
+                                <?php endif; ?>
+                            </td>
+                            <td align="center">
+                                <button type="button"
+                                    class="btn btn-flat p-1 btn-default btn-sm dropdown-toggle dropdown-icon"
+                                    data-toggle="dropdown">
+                                    Action
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <div class="dropdown-menu" role="menu">
+                                    <!-- <a class="dropdown-item view-data" href="javascript:void(0)"
+                                        data-id="<?php echo $row['id'] ?>"><span class="fa fa-eye text-dark"></span>
+                                        View</a> -->
+                                    <!-- <div class="dropdown-divider"></div> -->
+                                    <a class="dropdown-item edit-data" href="javascript:void(0)"
+                                        data-id="<?php echo $row['id'] ?>"><span class="fa fa-edit text-primary"></span>
+                                        Edit</a>
+                                    <div class="dropdown-divider"></div>
+                                     <a class="dropdown-item delete_data" href="javascript:void(0)"
+                                        data-id="<?php echo $row['id'] ?>"><span class="fa fa-trash text-danger"></span>
+                                        Delete</a>
+                                </div>
+                            </td>
+                        </tr>
+                        <?php endwhile; ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
 <script>
 $(document).ready(function() {
+    // Add data-table-page class to body to hide footer on mobile
+    $('body').addClass('data-table-page');
+    
     $('.delete_data').click(function() {
         _conf("Are you sure to delete this Department permanently?", "delete_department", [$(this).attr(
             'data-id')])
