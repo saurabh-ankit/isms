@@ -1,0 +1,20 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /isms/
+    
+    # Prevent redirect loops
+    RewriteCond %{ENV:REDIRECT_STATUS} ^$
+    
+    # Ensure trailing slash
+    RewriteCond %{REQUEST_URI} /isms/[^/.]+$
+    RewriteRule ^(.*)$ $1/ [L,R=301]
+    
+    # Handle front controller
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ index.php?page=$1 [L,QSA]
+    
+    # Prevent direct access to index.php
+    RewriteCond %{THE_REQUEST} /isms/index\.php [NC]
+    RewriteRule ^ /isms/ [L,R=301]
+</IfModule>

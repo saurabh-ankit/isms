@@ -31,6 +31,7 @@ if (isset($_SESSION['username'])) {
 <div class="row">
   <!-- /.col -->
   <div class="col-12 col-sm-4 col-md-4">
+    <a href="./?page=department" class="nav-link nav-department" style="padding: 0px; color: #2d3748; text-decoration: none; transition: background-color 0.2s;">
     <div class="info-box p-5">
       <span class="info-box-icon bg-gradient-light elevation-1 p-3"><i class="fas fa-code-branch"></i></span>
       <div class="my-auto">
@@ -44,10 +45,12 @@ if (isset($_SESSION['username'])) {
       </div>
       <!-- /.info-box-content -->
     </div>
+    </a>
     <!-- /.info-box -->
   </div>
   <!-- /.col -->
   <div class="col-12 col-sm-4 col-md-4">
+  <a href="./?page=categories" class="nav-link nav-categories" style="padding: 0px; color: #2d3748; text-decoration: none; transition: background-color 0.2s;">
     <div class="info-box p-5">
       <span class="info-box-icon bg-gradient-light elevation-1 p-3"><i class="fas fa-th-list"></i></span>
       <div class="my-auto">
@@ -62,10 +65,12 @@ if (isset($_SESSION['username'])) {
       </div>
       <!-- /.info-box-content -->
     </div>
+  </a>
     <!-- /.info-box -->
   </div>
   <!-- /.col -->
   <div class="col-12 col-sm-4 col-md-4">
+  <a href="./?page=items" class="nav-link nav-items" style="padding: 0px; color: #2d3748; text-decoration: none; transition: background-color 0.2s;">
     <div class="info-box p-5">
       <span class="info-box-icon bg-gradient-light elevation-1 p-3">
         <i class="fas fa-cubes"></i>
@@ -82,6 +87,7 @@ if (isset($_SESSION['username'])) {
       </div>
       <!-- /.info-box-content -->
     </div>
+  </a>
     <!-- /.info-box -->
   </div>
 </div>

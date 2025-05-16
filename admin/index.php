@@ -13,13 +13,12 @@ if(!isset($_SESSION['userdata']) || !isset($_SESSION['userdata']['login_type']))
 <body class="chakra-ui" style="height: 100%; background-color: var(--chakra-colors-gray-100);">
     <div class="chakra-responsive-layout">
         <div class="top-header" style="width: 100%; border-bottom: 1px solid #e2e8f0; background-color: white; padding: 0.75rem 1.5rem; display: flex; justify-content: space-between; align-items: center;">
-            <div class="site-logo" style="display: flex; align-items: center;">
-                <button id="sidebarToggle" aria-label="Toggle navigation">
+        <a href="https://manasum.reverely.ai/Bengaluru/admin/dashboard" class="site-logo" style="display: flex; align-items: center;">                <button id="sidebarToggle" aria-label="Toggle navigation">
                     <i class="fas fa-bars"></i>
                 </button>
                 <img src="<?php echo validate_image($_settings->info('logo'))?>" alt="Logo" style="height: 2.5rem; width: auto; margin-right: 1rem;">
                 <h1 style="font-size: 1.25rem; font-weight: 600; margin: 0; color: gray;">RELY</h1>
-            </div>
+</a>
             <div class="header-actions" style="display: flex; align-items: center; gap: 1rem;">
                 <!-- <div class="location-selector" style="margin-right: 1rem;">
                     <select onchange="changeLocation()" id="location-select" style="padding: 0.5rem 2rem 0.5rem 1rem; border-radius: 0.375rem; border: 1px solid #e2e8f0; background-color: var(--chakra-colors-teal-600); color: white; font-size: 0.875rem; appearance: none; position: relative; background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"white\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M6 9l6 6 6-6\"/></svg>'); background-repeat: no-repeat; background-position: right 0.5rem center;">

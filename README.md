@@ -1,5 +1,9 @@
 # ISMS - Inventory and Stock Management System
 
+
+
+
+
 ## Local Setup Instructions
 
 ### Prerequisites
