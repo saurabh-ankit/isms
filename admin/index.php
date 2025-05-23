@@ -12,12 +12,12 @@ if(!isset($_SESSION['userdata']) || !isset($_SESSION['userdata']['login_type']))
 <?php require_once('inc/header.php') ?>
 <body class="chakra-ui" style="height: 100%; background-color: var(--chakra-colors-gray-100);">
     <div class="chakra-responsive-layout">
-        <div class="top-header" style="width: 100%; border-bottom: 1px solid #e2e8f0; background-color: white; padding: 0.75rem 1.5rem; display: flex; justify-content: space-between; align-items: center;">
-        <a href="https://manasum.reverely.ai/Bengaluru/admin/dashboard" class="site-logo" style="display: flex; align-items: center;">                <button id="sidebarToggle" aria-label="Toggle navigation">
+        <div class="top-header" style="width: 100%; border-bottom: 1px solid #e2e8f0; background-color: white; padding: 10px; display: flex; justify-content: space-between; align-items: center;">
+        <a href=<?php echo REDIRECT_URL ;?> class="site-logo" style="display: flex; align-items: center;">                <button id="sidebarToggle" aria-label="Toggle navigation">
                     <i class="fas fa-bars"></i>
                 </button>
-                <img src="<?php echo validate_image($_settings->info('logo'))?>" alt="Logo" style="height: 2.5rem; width: auto; margin-right: 1rem;">
-                <h1 style="font-size: 1.25rem; font-weight: 600; margin: 0; color: gray;">RELY</h1>
+                <img src="<?php echo validate_image($_settings->info('logo'))?>" alt="Logo" style="height:45px; width: 45px; margin-right: 1rem;">
+                <h1 style="font-size: 18px; font-weight: 600; margin: 0; color: gray;">R E L Y</h1>
 </a>
             <div class="header-actions" style="display: flex; align-items: center; gap: 1rem;">
                 <!-- <div class="location-selector" style="margin-right: 1rem;">
@@ -35,10 +35,10 @@ if(!isset($_SESSION['userdata']) || !isset($_SESSION['userdata']['login_type']))
                         <?php endif; ?>
                     </select>
                 </div> -->
-                <div class="user-info" style="display: flex; align-items: center;">
+                <!-- <div class="user-info" style="display: flex; align-items: center;">
                     <span style="font-weight: 600; margin-right: 0.5rem;">Admin</span>
                     <img src="<?php echo validate_image($_settings->info('user'))?>" alt="User Avatar" style="height: 2.5rem; width: auto;">
-                </div>
+                </div> -->
             </div>
         </div>
         

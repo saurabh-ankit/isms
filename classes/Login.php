@@ -116,7 +116,9 @@ class Login extends DBConnection {
         // print_r($loc_id); die;
 
         $id =$_GET['platform_user_id'];
-        $url = 'http://roster.demo.reverely.ai//api/employee?id='.$id;
+        //$url = 'http://roster.demo.reverely.ai//api/employee?id='.$id;
+		$url = ROOT_URL.$id;
+
         //http://roster.demo.reverely.ai/
         $options = array(
         'http' => array(
